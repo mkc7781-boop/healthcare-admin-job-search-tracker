@@ -39,13 +39,11 @@ echo Starting server for test (wait 8 seconds)...
 start "job-tracker-test" /MIN cmd /c "npm run dev"
 ping -n 9 127.0.0.1 >nul
 
-call npm run test:api
+call npm run test:all
 set TEST_RESULT=%errorlevel%
 
-taskkill /F /IM node.exe >nul 2>&1
-
 if %TEST_RESULT% neq 0 (
-    echo [FAIL] Server test failed. Run start.bat manually and open http://localhost:3000
+    echo [FAIL] Full test suite failed. See output above.
     pause
     exit /b 1
 )
