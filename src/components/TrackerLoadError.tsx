@@ -18,6 +18,8 @@ export function TrackerLoadError({ message }: TrackerLoadErrorProps) {
 
   const isDbError =
     message.includes("Database table missing") ||
+    message.includes("Database permissions missing") ||
+    message.includes("permission denied") ||
     message.includes("job_leads") ||
     message.includes("relation");
 
@@ -36,8 +38,9 @@ export function TrackerLoadError({ message }: TrackerLoadErrorProps) {
 
         {isDbError && (
           <p className="mt-3 text-sm text-[var(--color-muted-foreground)]">
-            In Supabase → SQL Editor, run the migration file{" "}
-            <code className="rounded bg-black/5 px-1">001_job_leads.sql</code> from this project.
+            In Supabase → SQL Editor, run{" "}
+            <code className="rounded bg-black/5 px-1">002_job_leads_grants.sql</code> (or the full
+            migration if the table is missing).
           </p>
         )}
 

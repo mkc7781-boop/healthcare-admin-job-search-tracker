@@ -98,3 +98,11 @@ CREATE POLICY "Users can update own leads"
 CREATE POLICY "Users can delete own leads"
   ON job_leads FOR DELETE
   USING (auth.uid() = user_id);
+
+-- Explicit grants (required on newer Supabase projects)
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT USAGE ON TYPE public.region_enum TO anon, authenticated, service_role;
+GRANT USAGE ON TYPE public.priority_enum TO anon, authenticated, service_role;
+GRANT USAGE ON TYPE public.status_enum TO anon, authenticated, service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.job_leads TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.job_leads TO service_role;

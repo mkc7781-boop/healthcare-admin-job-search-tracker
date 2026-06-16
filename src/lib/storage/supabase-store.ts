@@ -28,6 +28,9 @@ function formatDbError(message: string): string {
   if (message.includes("job_leads") && message.includes("does not exist")) {
     return "Database table missing. Run the SQL migration in Supabase (see DEPLOY.md).";
   }
+  if (message.includes("permission denied for table job_leads")) {
+    return "Database permissions missing. Run 002_job_leads_grants.sql in Supabase SQL Editor (see DEPLOY.md).";
+  }
   return message;
 }
 
