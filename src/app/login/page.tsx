@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,10 +23,14 @@ export default function LoginPage() {
     const supabase = createClient();
 
     if (mode === "signup") {
-      const { error: signUpError } = await supabase.auth.signUp({ email, password });
+      const { data, error: signUpError } = await supabase.auth.signUp({ email, password });
       if (signUpError) {
         setError(signUpError.message);
         setLoading(false);
+        return;
+      }
+      if (data.session) {
+        window.location.assign("/");
         return;
       }
       setMessage("Account created. You can sign in now.");
@@ -37,15 +39,23 @@ export default function LoginPage() {
       return;
     }
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (signInError) {
       setError(signInError.message);
       setLoading(false);
       return;
     }
 
-    router.push("/");
-    router.refresh();
+    if (data.session) {
+      window.location.assign("/");
+      return;
+    }
+
+    setError("Sign in succeeded but no session was created. Try again.");
+    setLoading(false);
   }
 
   return (

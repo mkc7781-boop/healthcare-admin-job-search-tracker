@@ -28,6 +28,8 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
+  // Refresh session cookies before checking auth.
+  await supabase.auth.getSession();
   const {
     data: { user },
   } = await supabase.auth.getUser();

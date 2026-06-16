@@ -17,9 +17,18 @@ async function getUserClient(userId?: string) {
   const client = await createClient();
   const {
     data: { user },
+    error,
   } = await client.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
+  if (error) throw new Error(`Authentication error: ${error.message}`);
+  if (!user) throw new Error("Not signed in. Please sign in again.");
   return { client, userId: user.id };
+}
+
+function formatDbError(message: string): string {
+  if (message.includes("job_leads") && message.includes("does not exist")) {
+    return "Database table missing. Run the SQL migration in Supabase (see DEPLOY.md).";
+  }
+  return message;
 }
 
 export async function supabaseGetAllLeads(userId?: string): Promise<JobLead[]> {
@@ -30,7 +39,7 @@ export async function supabaseGetAllLeads(userId?: string): Promise<JobLead[]> {
     .eq("user_id", uid)
     .order("created_at", { ascending: false });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(formatDbError(error.message));
   return (data ?? []).map((row) => mapRow(row as DbLead));
 }
 

@@ -1,7 +1,17 @@
 import { Dashboard } from "@/components/Dashboard";
-import { getLeads, isUsingCloud } from "@/lib/actions";
+import { requireAuthenticatedUserId } from "@/lib/auth";
+import { isCloudMode } from "@/lib/config";
+import { getAllLeads } from "@/lib/leads";
+
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [leads, cloud] = await Promise.all([getLeads(), isUsingCloud()]);
+  const cloud = isCloudMode();
+
+  if (cloud) {
+    await requireAuthenticatedUserId();
+  }
+
+  const leads = await getAllLeads();
   return <Dashboard leads={leads} isCloud={cloud} />;
 }
