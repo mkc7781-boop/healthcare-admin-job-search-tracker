@@ -24,6 +24,9 @@ function runNode(script, cwd = root) {
 }
 
 function runNpm(args, cwd = root) {
+  if (isWin) {
+    return spawnSync("cmd.exe", ["/c", "npm", ...args], { cwd, encoding: "utf8", shell: false });
+  }
   return spawnSync(npmCmd, args, { cwd, encoding: "utf8", shell: false });
 }
 
@@ -153,11 +156,14 @@ if (manifestRes.ok) {
 // Local API with ephemeral dev server (kill only our child, not all node.exe)
 console.log("\n-- Local API --");
 stopDevServer();
-devProcess = spawn(npmCmd, ["run", "dev"], {
+const devCmd = isWin ? "cmd.exe" : npmCmd;
+const devArgs = isWin ? ["/c", "npm run dev"] : ["run", "dev"];
+devProcess = spawn(devCmd, devArgs, {
   cwd: root,
   detached: true,
   stdio: "ignore",
   shell: false,
+  windowsHide: true,
 });
 devProcess.unref();
 await new Promise((r) => setTimeout(r, 15000));

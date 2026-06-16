@@ -3,6 +3,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isCloudMode } from "@/lib/config";
 
 export async function updateSession(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/.well-known/")) {
+    return NextResponse.next({ request });
+  }
+
   if (!isCloudMode()) {
     return NextResponse.next({ request });
   }
