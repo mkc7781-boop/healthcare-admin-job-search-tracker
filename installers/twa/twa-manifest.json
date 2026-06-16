@@ -1,0 +1,35 @@
+{
+  "packageId": "com.healthcare.jobtracker",
+  "host": "healthcare-admin-job-search-tracker.vercel.app",
+  "name": "Healthcare Admin Job Tracker",
+  "launcherName": "Job Tracker",
+  "display": "standalone",
+  "themeColor": "#0F766E",
+  "themeColorDark": "#0F766E",
+  "navigationColor": "#0F766E",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#F8FAFC",
+  "startUrl": "/",
+  "iconUrl": "https://healthcare-admin-job-search-tracker.vercel.app/icon-512.png",
+  "maskableIconUrl": "https://healthcare-admin-job-search-tracker.vercel.app/icon-512-maskable.png",
+  "monochromeIconUrl": "https://healthcare-admin-job-search-tracker.vercel.app/icon-192.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "jobtracker"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://healthcare-admin-job-search-tracker.vercel.app/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableNotifications": true,
+  "orientation": "any"
+}
