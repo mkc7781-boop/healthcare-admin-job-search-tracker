@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.healthcare.jobtracker",
+      "sha256_cert_fingerprints": [
+        "B4:8C:8C:D0:D8:57:5A:43:E0:53:C9:FB:E6:A8:ED:62:FF:DC:EE:C9:99:CF:90:69:4A:52:D2:A2:B8:05:61:16"
+      ]
+    }
+  }
+]

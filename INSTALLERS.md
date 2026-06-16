@@ -21,20 +21,17 @@ The installed app opens in its own window and syncs with your phone.
 
 ---
 
-## Android — `.apk` file
+## Android — `.apk` file (no Android Studio)
 
-You need **Android Studio** installed once on your PC:
+1. Double-click **`build-android-apk.bat`**
+2. When finished, your APK is here:
 
-1. Download: https://developer.android.com/studio
-2. Install with default options (includes Java + Android SDK)
-3. Double-click **`build-android-apk.bat`**
-4. When finished, copy this file to your phone:
+   **`dist\Healthcare-Job-Tracker.apk`**
 
-   `installers\android\android\app\build\outputs\apk\debug\app-debug.apk`
+3. Copy that file to your phone (USB, email, Google Drive, etc.)
+4. Open it on your phone and allow install if asked
 
-5. On your phone, open the APK and allow install from unknown sources if asked
-
-This is a **real Android app** — it appears in your app drawer like any other app.
+This is a **real Android app** with your logo — it appears in your app drawer.
 
 ---
 

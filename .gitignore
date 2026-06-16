@@ -53,3 +53,9 @@ next-env.d.ts
 /installers/windows/dist
 /installers/android/node_modules
 /installers/android/android
+/installers/twa/node_modules
+/installers/twa/android.keystore
+/installers/twa/app/
+/installers/twa/*.apk
+/installers/twa/*.aab
+/dist/
