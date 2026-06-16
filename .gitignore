@@ -47,3 +47,9 @@ verify-server.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# native installers
+/installers/windows/node_modules
+/installers/windows/dist
+/installers/android/node_modules
+/installers/android/android

@@ -1,0 +1,13 @@
+{
+  "appId": "com.healthcare.jobtracker",
+  "appName": "Healthcare Admin Job Tracker",
+  "webDir": "www",
+  "server": {
+    "url": "https://healthcare-admin-job-search-tracker.vercel.app",
+    "androidScheme": "https",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
