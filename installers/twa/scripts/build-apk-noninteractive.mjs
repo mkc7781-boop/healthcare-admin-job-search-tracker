@@ -4,6 +4,7 @@ import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
+import { spawnSync } from "node:child_process";
 
 const require = createRequire(import.meta.url);
 const {
@@ -40,6 +41,15 @@ async function main() {
   const buffered = new BufferedLog(log);
   await twaGenerator.createTwaProject(root, manifest, buffered);
   buffered.flush();
+
+  const applyIcons = spawnSync(
+    process.execPath,
+    [join(root, "..", "..", "scripts", "apply-android-icons.mjs")],
+    { stdio: "inherit" }
+  );
+  if (applyIcons.status !== 0) {
+    throw new Error("Failed to apply Android launcher icons.");
+  }
 
   const manifestContents = readFileSync(manifestPath);
   writeFileSync(join(root, "manifest-checksum.txt"), checksum(manifestContents));

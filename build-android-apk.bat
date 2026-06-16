@@ -13,11 +13,14 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo [1/3] Generating app icons...
+echo [1/4] Generating app icons...
 call node scripts\generate-icons.mjs
 if errorlevel 1 exit /b 1
 
-echo [2/3] Ensuring Android SDK...
+call node scripts\apply-android-icons.mjs
+if errorlevel 1 exit /b 1
+
+echo [2/4] Ensuring Android SDK...
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\setup-android-sdk.ps1"
 if errorlevel 1 exit /b 1
 
@@ -25,7 +28,7 @@ if not exist "%USERPROFILE%\.bubblewrap\android-sdk\bin" (
     mklink /J "%USERPROFILE%\.bubblewrap\android-sdk\bin" "%USERPROFILE%\.bubblewrap\android-sdk\cmdline-tools\latest\bin" >nul 2>&1
 )
 
-echo [3/3] Building signed APK...
+echo [3/4] Building signed APK...
 cd installers\twa
 set BUBBLEWRAP_KEYSTORE_PASSWORD=jobtracker2026
 set BUBBLEWRAP_KEY_PASSWORD=jobtracker2026

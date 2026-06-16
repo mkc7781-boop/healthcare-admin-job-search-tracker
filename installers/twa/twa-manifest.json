@@ -20,8 +20,8 @@
     "path": "./android.keystore",
     "alias": "jobtracker"
   },
-  "appVersionName": "1.0.0",
-  "appVersionCode": 1,
+  "appVersionName": "1.0.2",
+  "appVersionCode": 3,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://healthcare-admin-job-search-tracker.vercel.app/manifest.json",
