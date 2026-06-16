@@ -1,0 +1,49 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files
+.env*.local
+.env
+
+# local lead data (user's job tracker data)
+/data/leads.json
+
+# vercel
+.vercel
+
+# local dev artifacts
+/terminals/
+verify-server.log
+*.txt
+!package.json
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

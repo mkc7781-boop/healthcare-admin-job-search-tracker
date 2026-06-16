@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://healthcare-admin-job-tracker/schema/job-lead.schema.json",
+  "title": "JobLeadInput",
+  "description": "Input shape for creating or updating a job lead. Omits server-managed fields (id, user_id, timestamps).",
+  "type": "object",
+  "required": ["region", "employer", "priority", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "region": {
+      "type": "string",
+      "enum": [
+        "sacramento",
+        "bay_area",
+        "northern_california",
+        "government",
+        "state_of_california",
+        "remote"
+      ],
+      "description": "Job search region category"
+    },
+    "employer": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Organization name (required)"
+    },
+    "career_site": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "URL to job posting or careers page"
+    },
+    "position": {
+      "type": ["string", "null"],
+      "description": "Job title"
+    },
+    "city": {
+      "type": ["string", "null"],
+      "description": "Job location city"
+    },
+    "min_requirements": {
+      "type": ["string", "null"],
+      "description": "Minimum qualifications (free text)"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "default": "medium"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["need_to_apply", "applied", "interviewing", "rejected"],
+      "default": "need_to_apply"
+    },
+    "date_applied": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "ISO date YYYY-MM-DD"
+    },
+    "follow_up_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "due_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "contact_recruiter": {
+      "type": ["string", "null"],
+      "description": "Recruiter name, email, or phone"
+    },
+    "notes": {
+      "type": ["string", "null"]
+    }
+  }
+}
