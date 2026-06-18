@@ -116,9 +116,16 @@ export async function supabaseUpdateLead(
   if (input.employer !== undefined && !input.employer.trim()) {
     throw new Error("Employer is required.");
   }
-  if (input.region) throw new Error("Region cannot be changed after creation.");
 
   const { client, userId: uid } = await getUserClient(userId);
+
+  if (input.region !== undefined) {
+    const existing = await supabaseGetLeadById(id, userId);
+    if (!existing) throw new Error("Lead not found.");
+    if (input.region !== existing.region) {
+      throw new Error("Region cannot be changed after creation.");
+    }
+  }
 
   const payload: Record<string, unknown> = {};
   if (input.employer !== undefined) payload.employer = input.employer.trim();

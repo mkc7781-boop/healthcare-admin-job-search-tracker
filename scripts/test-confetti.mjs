@@ -19,9 +19,10 @@ function fail(label, detail = "") {
 // --- Static checks ---
 const leadForm = readFileSync(join(root, "src/components/LeadForm.tsx"), "utf8");
 if (
-  leadForm.includes('payload.status === "applied"') &&
+  leadForm.includes('status === "applied"') &&
   leadForm.includes("previousStatus !== \"applied\"") &&
-  leadForm.includes("fireAppliedConfetti()")
+  leadForm.includes("fireAppliedConfetti()") &&
+  leadForm.includes("updateLead(lead.id, fields)")
 ) {
   pass("LeadForm triggers confetti on transition to applied");
 } else {

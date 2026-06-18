@@ -87,8 +87,7 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
       return;
     }
 
-    const payload = {
-      region: form.region,
+    const fields = {
       employer: form.employer.trim(),
       career_site: form.career_site.trim() || null,
       position: form.position.trim() || null,
@@ -105,11 +104,13 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
 
     const previousStatus = lead?.status;
     const changedToApplied =
-      payload.status === "applied" && previousStatus !== "applied";
+      fields.status === "applied" && previousStatus !== "applied";
 
     startTransition(async () => {
       const result =
-        isEdit && lead ? await updateLead(lead.id, payload) : await createLead(payload);
+        isEdit && lead
+          ? await updateLead(lead.id, fields)
+          : await createLead({ region: form.region, ...fields });
 
       if (!result.ok) {
         setError(result.error);
