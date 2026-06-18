@@ -14,6 +14,7 @@ import type { JobLead } from "@/lib/types";
 interface DashboardProps {
   leads: JobLead[];
   isCloud?: boolean;
+  buildId?: string;
 }
 
 function matchesSearch(lead: JobLead, query: string) {
@@ -32,7 +33,7 @@ function matchesSearch(lead: JobLead, query: string) {
   return haystack.includes(query.toLowerCase());
 }
 
-export function Dashboard({ leads, isCloud = false }: DashboardProps) {
+export function Dashboard({ leads, isCloud = false, buildId = "dev" }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -115,6 +116,11 @@ export function Dashboard({ leads, isCloud = false }: DashboardProps) {
           />
         ))}
       </div>
+
+      <p className="pb-2 text-center text-xs text-[var(--color-muted-foreground)]">
+        Build {buildId}
+        {isCloud ? " · cloud sync" : " · local mode"}
+      </p>
     </div>
   );
 }

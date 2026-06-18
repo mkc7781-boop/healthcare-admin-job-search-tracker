@@ -20,7 +20,10 @@ function createWindow() {
     },
   });
 
-  win.loadURL(APP_URL);
+  // Always load the latest cloud app (avoid stale cached JS after deploys).
+  win.webContents.session.clearCache().finally(() => {
+    win.loadURL(APP_URL);
+  });
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("http")) {

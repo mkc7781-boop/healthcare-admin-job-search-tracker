@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -73,6 +73,30 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
   const router = useRouter();
 
   const isEdit = Boolean(lead);
+
+  useEffect(() => {
+    if (!open) return;
+    setError(null);
+    if (lead) {
+      setForm({
+        region: lead.region,
+        employer: lead.employer,
+        career_site: lead.career_site ?? "",
+        position: lead.position ?? "",
+        city: lead.city ?? "",
+        min_requirements: lead.min_requirements ?? "",
+        priority: lead.priority,
+        status: lead.status,
+        date_applied: lead.date_applied ?? "",
+        follow_up_date: lead.follow_up_date ?? "",
+        due_date: lead.due_date ?? "",
+        contact_recruiter: lead.contact_recruiter ?? "",
+        notes: lead.notes ?? "",
+      });
+    } else {
+      setForm(emptyForm(region));
+    }
+  }, [open, lead, region]);
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));

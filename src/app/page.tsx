@@ -32,7 +32,11 @@ export default async function HomePage() {
 
   try {
     const leads = await getAllLeads();
-    return <Dashboard leads={leads} isCloud={cloud} />;
+    const buildId =
+      process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ??
+      process.env.NEXT_PUBLIC_BUILD_ID ??
+      "dev";
+    return <Dashboard leads={leads} isCloud={cloud} buildId={buildId} />;
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error loading leads.";
     return <TrackerLoadError message={isAuthMessage(message) ? "Not signed in. Please sign in again." : message} />;
