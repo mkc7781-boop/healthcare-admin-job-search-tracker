@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -69,6 +70,7 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
   );
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const isEdit = Boolean(lead);
 
@@ -106,20 +108,21 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
       payload.status === "applied" && previousStatus !== "applied";
 
     startTransition(async () => {
-      try {
-        if (isEdit && lead) {
-          await updateLead(lead.id, payload);
-        } else {
-          await createLead(payload);
-        }
-        onOpenChange(false);
-        if (changedToApplied) {
-          await fireAppliedConfetti();
-        }
-        if (!isEdit) setForm(emptyForm(region));
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Something went wrong.");
+      const result =
+        isEdit && lead ? await updateLead(lead.id, payload) : await createLead(payload);
+
+      if (!result.ok) {
+        setError(result.error);
+        return;
       }
+
+      onOpenChange(false);
+      router.refresh();
+
+      if (changedToApplied) {
+        await fireAppliedConfetti();
+      }
+      if (!isEdit) setForm(emptyForm(region));
     });
   }
 

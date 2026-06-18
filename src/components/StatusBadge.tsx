@@ -10,5 +10,7 @@ const variants: Record<Status, "info" | "warning" | "success" | "muted"> = {
 };
 
 export function StatusBadge({ status }: { status: Status }) {
-  return <Badge variant={variants[status]}>{STATUS_LABELS[status]}</Badge>;
+  const label = STATUS_LABELS[status] ?? status;
+  const variant = variants[status] ?? "muted";
+  return <Badge variant={variant}>{label}</Badge>;
 }

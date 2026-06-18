@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { StickyNote } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ export function NotesCell({ lead }: NotesCellProps) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(lead.notes ?? "");
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   useEffect(() => {
     if (!open) setDraft(lead.notes ?? "");
@@ -46,7 +48,9 @@ export function NotesCell({ lead }: NotesCellProps) {
     }
 
     startTransition(async () => {
-      await updateLead(lead.id, { notes: value });
+      const result = await updateLead(lead.id, { notes: value });
+      if (!result.ok) return;
+      router.refresh();
       if (closeAfter) setOpen(false);
     });
   }

@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { Dashboard } from "@/components/Dashboard";
 import { TrackerLoadError } from "@/components/TrackerLoadError";
 import { getAuthenticatedUserId } from "@/lib/auth";
@@ -6,6 +5,14 @@ import { isCloudMode } from "@/lib/config";
 import { getAllLeads } from "@/lib/leads";
 
 export const dynamic = "force-dynamic";
+
+function isAuthMessage(message: string) {
+  return (
+    message.includes("Not signed in") ||
+    message.includes("Authentication error") ||
+    message.includes("JWT")
+  );
+}
 
 export default async function HomePage() {
   const cloud = isCloudMode();
@@ -18,7 +25,9 @@ export default async function HomePage() {
 
   if (cloud) {
     const userId = await getAuthenticatedUserId();
-    if (!userId) redirect("/login");
+    if (!userId) {
+      return <TrackerLoadError message="Not signed in. Please sign in again." />;
+    }
   }
 
   try {
@@ -26,15 +35,6 @@ export default async function HomePage() {
     return <Dashboard leads={leads} isCloud={cloud} />;
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error loading leads.";
-
-    if (
-      message.includes("Not signed in") ||
-      message.includes("Authentication error") ||
-      message.includes("JWT")
-    ) {
-      redirect("/login");
-    }
-
-    return <TrackerLoadError message={message} />;
+    return <TrackerLoadError message={isAuthMessage(message) ? "Not signed in. Please sign in again." : message} />;
   }
 }

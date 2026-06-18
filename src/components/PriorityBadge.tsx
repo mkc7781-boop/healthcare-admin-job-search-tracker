@@ -9,5 +9,7 @@ const variants: Record<Priority, "destructive" | "warning" | "secondary"> = {
 };
 
 export function PriorityBadge({ priority }: { priority: Priority }) {
-  return <Badge variant={variants[priority]}>{PRIORITY_LABELS[priority]}</Badge>;
+  const label = PRIORITY_LABELS[priority] ?? priority;
+  const variant = variants[priority] ?? "secondary";
+  return <Badge variant={variant}>{label}</Badge>;
 }

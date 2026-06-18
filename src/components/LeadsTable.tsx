@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import {
@@ -50,10 +51,12 @@ interface LeadsTableProps {
 export function LeadsTable({ leads }: LeadsTableProps) {
   const [editingLead, setEditingLead] = useState<JobLead | null>(null);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   function handleDelete(id: string) {
     startTransition(async () => {
-      await deleteLead(id);
+      const result = await deleteLead(id);
+      if (result.ok) router.refresh();
     });
   }
 

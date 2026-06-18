@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import { LogOut, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ function matchesSearch(lead: JobLead, query: string) {
 export function Dashboard({ leads, isCloud = false }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const exportLeads = useMemo(
     () => leads.filter((lead) => matchesSearch(lead, searchQuery)),
@@ -62,7 +64,13 @@ export function Dashboard({ leads, isCloud = false }: DashboardProps) {
             variant="outline"
             size="sm"
             disabled={isPending}
-            onClick={() => startTransition(async () => signOut())}
+            onClick={() =>
+              startTransition(async () => {
+                await signOut();
+                router.push("/login");
+                router.refresh();
+              })
+            }
           >
             <LogOut className="h-4 w-4" />
             Sign Out

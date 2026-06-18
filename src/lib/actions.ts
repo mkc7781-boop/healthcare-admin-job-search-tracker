@@ -1,7 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { getAuthenticatedUserId } from "@/lib/auth";
+import { actionError, type ActionResult } from "@/lib/action-result";
 import { isCloudMode } from "@/lib/config";
 import {
   createLeadRecord,
@@ -25,30 +25,49 @@ export async function getLeads(): Promise<JobLead[]> {
   return getAllLeads();
 }
 
-export async function createLead(input: JobLeadInput) {
-  await ensureCloudAuth();
-  await createLeadRecord(input);
-  revalidatePath("/");
-}
-
-export async function updateLead(id: string, input: Partial<JobLeadInput>) {
-  await ensureCloudAuth();
-  await updateLeadRecord(id, input);
-  revalidatePath("/");
-}
-
-export async function deleteLead(id: string) {
-  await ensureCloudAuth();
-  await deleteLeadRecord(id);
-  revalidatePath("/");
-}
-
-export async function signOut() {
-  if (isCloudMode()) {
-    const supabase = await createClient();
-    await supabase.auth.signOut();
+export async function createLead(input: JobLeadInput): Promise<ActionResult> {
+  try {
+    await ensureCloudAuth();
+    await createLeadRecord(input);
+    return { ok: true };
+  } catch (err) {
+    return actionError(err);
   }
-  revalidatePath("/");
+}
+
+export async function updateLead(
+  id: string,
+  input: Partial<JobLeadInput>
+): Promise<ActionResult> {
+  try {
+    await ensureCloudAuth();
+    await updateLeadRecord(id, input);
+    return { ok: true };
+  } catch (err) {
+    return actionError(err);
+  }
+}
+
+export async function deleteLead(id: string): Promise<ActionResult> {
+  try {
+    await ensureCloudAuth();
+    await deleteLeadRecord(id);
+    return { ok: true };
+  } catch (err) {
+    return actionError(err);
+  }
+}
+
+export async function signOut(): Promise<ActionResult> {
+  try {
+    if (isCloudMode()) {
+      const supabase = await createClient();
+      await supabase.auth.signOut();
+    }
+    return { ok: true };
+  } catch (err) {
+    return actionError(err);
+  }
 }
 
 export async function isUsingCloud(): Promise<boolean> {

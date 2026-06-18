@@ -156,6 +156,13 @@ if (puppeteerModule && testLead) {
             })
             .catch(() => {});
           pass("Dialog closed after save");
+
+          const bodyText = await page.evaluate(() => document.body.innerText);
+          if (bodyText.includes("Server Components render")) {
+            fail("No server render error after save");
+          } else {
+            pass("No server render error after save");
+          }
         }
       }
   } catch (err) {
