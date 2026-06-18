@@ -4,6 +4,13 @@ const path = require("path");
 const APP_URL =
   process.env.APP_URL || "https://healthcare-admin-job-search-tracker.vercel.app";
 
+if (process.env.ELECTRON_REMOTE_DEBUG) {
+  app.commandLine.appendSwitch(
+    "remote-debugging-port",
+    process.env.ELECTRON_REMOTE_DEBUG
+  );
+}
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1360,

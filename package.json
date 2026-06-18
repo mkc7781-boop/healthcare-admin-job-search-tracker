@@ -11,6 +11,7 @@
     "test:api": "node scripts/test-agent-api.mjs",
     "test:all": "node scripts/test-all.mjs",
     "test:confetti": "node scripts/test-confetti.mjs",
+    "test:desktop": "node scripts/test-desktop-app.mjs",
     "test:apk": "node scripts/verify-android-apk.mjs && node scripts/verify-apk-icon.mjs",
     "migrate:cloud": "node scripts/migrate-to-supabase.mjs"
   },
