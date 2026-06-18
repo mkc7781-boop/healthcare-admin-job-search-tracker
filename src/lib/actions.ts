@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireAuthenticatedUserId } from "@/lib/auth";
+import { getAuthenticatedUserId } from "@/lib/auth";
 import { isCloudMode } from "@/lib/config";
 import {
   createLeadRecord,
@@ -13,8 +13,10 @@ import { createClient } from "@/lib/supabase/server";
 import type { JobLead, JobLeadInput } from "@/lib/types";
 
 async function ensureCloudAuth() {
-  if (isCloudMode()) {
-    await requireAuthenticatedUserId();
+  if (!isCloudMode()) return;
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    throw new Error("Not signed in. Please sign in again.");
   }
 }
 

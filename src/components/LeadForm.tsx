@@ -21,6 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { createLead, updateLead } from "@/lib/actions";
 import { PRIORITY_LABELS, REGIONS, STATUS_LABELS } from "@/lib/constants";
+import { fireAppliedConfetti } from "@/lib/confetti";
 import type { JobLead, Priority, Region, Status } from "@/lib/types";
 
 interface LeadFormProps {
@@ -100,6 +101,10 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
       notes: form.notes.trim() || null,
     };
 
+    const previousStatus = lead?.status;
+    const changedToApplied =
+      payload.status === "applied" && previousStatus !== "applied";
+
     startTransition(async () => {
       try {
         if (isEdit && lead) {
@@ -108,6 +113,9 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
           await createLead(payload);
         }
         onOpenChange(false);
+        if (changedToApplied) {
+          await fireAppliedConfetti();
+        }
         if (!isEdit) setForm(emptyForm(region));
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong.");

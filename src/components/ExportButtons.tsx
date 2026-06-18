@@ -16,7 +16,12 @@ export function ExportButtons({ leads }: ExportButtonsProps) {
         <Download className="h-4 w-4" />
         Export CSV
       </Button>
-      <Button variant="outline" size="sm" onClick={() => exportToExcel(leads)} disabled={leads.length === 0}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => void exportToExcel(leads)}
+        disabled={leads.length === 0}
+      >
         <FileSpreadsheet className="h-4 w-4" />
         Export Excel
       </Button>

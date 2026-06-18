@@ -10,6 +10,7 @@
     "lint": "next lint",
     "test:api": "node scripts/test-agent-api.mjs",
     "test:all": "node scripts/test-all.mjs",
+    "test:confetti": "node scripts/test-confetti.mjs",
     "test:apk": "node scripts/verify-android-apk.mjs && node scripts/verify-apk-icon.mjs",
     "migrate:cloud": "node scripts/migrate-to-supabase.mjs"
   },
@@ -23,6 +24,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.2",
+    "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
@@ -35,11 +37,14 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.1.11",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20.19.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "eslint": "^9.29.0",
     "eslint-config-next": "^15.3.4",
+    "puppeteer": "^25.1.0",
+    "puppeteer-core": "^25.1.0",
     "sharp": "^0.35.1",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"

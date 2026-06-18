@@ -1,4 +1,4 @@
-import { existsSync, statSync, readFileSync } from "node:fs";
+import { existsSync, statSync, readFileSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn, spawnSync } from "node:child_process";
@@ -174,6 +174,10 @@ else fail("Local agent API", (local.stdout || local.stderr || "").trim().split("
 
 stopDevServer();
 await new Promise((r) => setTimeout(r, 2000));
+
+// Dev + production build share .next; clear it so build does not corrupt a running dev server.
+const nextDir = join(root, ".next");
+if (existsSync(nextDir)) rmSync(nextDir, { recursive: true, force: true });
 
 console.log("\n-- Build --");
 const build = runNpm(["run", "build"]);

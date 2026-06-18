@@ -1,4 +1,3 @@
-import * as XLSX from "xlsx";
 import {
   EXPORT_COLUMNS,
   PRIORITY_LABELS,
@@ -58,7 +57,8 @@ export function exportToCsv(leads: JobLead[]) {
   downloadBlob(blob, `job-leads-${new Date().toISOString().slice(0, 10)}.csv`);
 }
 
-export function exportToExcel(leads: JobLead[]) {
+export async function exportToExcel(leads: JobLead[]) {
+  const XLSX = await import("xlsx");
   const rows = [Array.from(EXPORT_COLUMNS), ...leads.map(leadToRow)];
   const worksheet = XLSX.utils.aoa_to_sheet(rows);
   const workbook = XLSX.utils.book_new();
