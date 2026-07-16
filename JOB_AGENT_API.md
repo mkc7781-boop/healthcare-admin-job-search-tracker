@@ -23,7 +23,7 @@ Base URL (local): `http://localhost:3000`
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
 | GET | `/api/agent/schema` | Full schema, regions, enums, example body |
-| GET | `/api/agent/leads` | List all leads + region capacity |
+| GET | `/api/agent/leads` | List all leads + per-region counts |
 | GET | `/api/agent/leads?region=sacramento` | List leads in one region |
 | POST | `/api/agent/leads` | Add a new lead |
 | POST | `/api/agent/leads/bulk` | Add multiple leads at once |
@@ -45,16 +45,16 @@ If not set, the API is open — your agent can call it with no headers.
 
 ## Regions (pick one per lead)
 
-| ID | Label | Max leads |
-|----|-------|-----------|
-| `sacramento` | Sacramento | 10 |
-| `bay_area` | Bay Area | 10 |
-| `northern_california` | Northern California | 10 |
-| `government` | Government Jobs | 10 |
-| `state_of_california` | State of California | 10 |
-| `remote` | Remote (Work from Home) | 10 |
+| ID | Label |
+|----|-------|
+| `sacramento` | Sacramento |
+| `bay_area` | Bay Area |
+| `northern_california` | Northern California |
+| `government` | Government Jobs |
+| `state_of_california` | State of California |
+| `remote` | Remote (Work from Home) |
 
-**Before adding a lead**, check `GET /api/agent/leads` — the response includes `slots_available` per region. Do not POST if `slots_available` is 0.
+There is **no per-region lead limit**. You can POST as many leads as needed.
 
 ---
 
@@ -102,7 +102,7 @@ If not set, the API is open — your agent can call it with no headers.
 
 ```json
 {
-  "error": "Maximum of 10 leads per region reached for sacramento."
+  "error": "Employer is required."
 }
 ```
 
@@ -112,12 +112,11 @@ If not set, the API is open — your agent can call it with no headers.
 
 ```
 1. GET /api/agent/schema          → learn regions, fields, enums
-2. GET /api/agent/leads           → see what's already tracked + open slots
+2. GET /api/agent/leads           → see what's already tracked
 3. Search for jobs (your agent's job)
 4. For each good match:
    a. Pick the right region
-   b. Check slots_available > 0
-   c. POST /api/agent/leads with structured data
+   b. POST /api/agent/leads with structured data
 5. User reviews at http://localhost:3000
 ```
 

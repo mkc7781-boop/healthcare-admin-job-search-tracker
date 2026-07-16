@@ -1,6 +1,5 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { MAX_LEADS_PER_REGION } from "@/lib/constants";
 import type { JobLead, JobLeadInput, Region } from "@/lib/types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -30,10 +29,6 @@ async function writeLeads(leads: JobLead[]): Promise<void> {
   await fs.writeFile(DATA_FILE, JSON.stringify(leads, null, 2), "utf-8");
 }
 
-function countByRegion(leads: JobLead[], region: Region): number {
-  return leads.filter((l) => l.region === region).length;
-}
-
 export async function jsonGetAllLeads(): Promise<JobLead[]> {
   const leads = await readLeads();
   return leads.sort(
@@ -51,12 +46,6 @@ export async function jsonCreateLead(input: JobLeadInput): Promise<JobLead> {
 
   if (!input.employer?.trim()) {
     throw new Error("Employer is required.");
-  }
-
-  if (countByRegion(leads, input.region) >= MAX_LEADS_PER_REGION) {
-    throw new Error(
-      `Maximum of ${MAX_LEADS_PER_REGION} leads per region reached for ${input.region}.`
-    );
   }
 
   const timestamp = now();

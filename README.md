@@ -1,6 +1,6 @@
 # Healthcare Admin Job Search Tracker
 
-Track healthcare administration job applications by region. Each region holds up to 10 leads. Your **job-search AI agent** can fill the tracker automatically via a simple API.
+Track healthcare administration job applications by region with no per-region lead limit. Your **job-search AI agent** can fill the tracker automatically via a simple API.
 
 ## Run it on Windows (easiest)
 
@@ -33,7 +33,7 @@ Data is saved to `data/leads.json` on your machine.
 
 ## What you get
 
-### Six regions (max 10 leads each)
+### Six regions (unlimited leads each)
 - Sacramento
 - Bay Area
 - Northern California

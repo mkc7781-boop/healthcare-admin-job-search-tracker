@@ -1,7 +1,5 @@
 import type { Priority, Region, Status } from "./types";
 
-export const MAX_LEADS_PER_REGION = 10;
-
 export const REGIONS: { id: Region; label: string }[] = [
   { id: "sacramento", label: "Sacramento" },
   { id: "bay_area", label: "Bay Area" },

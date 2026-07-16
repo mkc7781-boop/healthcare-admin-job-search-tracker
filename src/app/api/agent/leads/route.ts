@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { agentUnauthorizedResponse, verifyAgentRequest } from "@/lib/agent-auth";
-import { MAX_LEADS_PER_REGION, REGIONS } from "@/lib/constants";
+import { REGIONS } from "@/lib/constants";
 import {
   createLeadRecord,
   getAllLeads,
@@ -26,8 +26,6 @@ export async function GET(request: NextRequest) {
       id: r.id,
       label: r.label,
       count: capacity[r.id] ?? 0,
-      max: MAX_LEADS_PER_REGION,
-      slots_available: MAX_LEADS_PER_REGION - (capacity[r.id] ?? 0),
     })),
   });
 }

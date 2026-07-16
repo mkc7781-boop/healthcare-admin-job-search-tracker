@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { agentUnauthorizedResponse, verifyAgentRequest } from "@/lib/agent-auth";
-import { MAX_LEADS_PER_REGION, PRIORITY_LABELS, REGIONS, STATUS_LABELS } from "@/lib/constants";
+import { PRIORITY_LABELS, REGIONS, STATUS_LABELS } from "@/lib/constants";
 
 export async function GET(request: NextRequest) {
   if (!verifyAgentRequest(request)) return agentUnauthorizedResponse();
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   return Response.json({
     description:
       "Schema for your job-search agent to add leads to the Healthcare Admin Job Tracker.",
-    max_leads_per_region: MAX_LEADS_PER_REGION,
+    max_leads_per_region: null,
     regions: REGIONS,
     priorities: PRIORITY_LABELS,
     statuses: STATUS_LABELS,

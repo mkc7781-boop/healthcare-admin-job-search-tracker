@@ -1,4 +1,3 @@
-import { MAX_LEADS_PER_REGION } from "@/lib/constants";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import type { JobLead, JobLeadInput, Region } from "@/lib/types";
 
@@ -69,19 +68,6 @@ export async function supabaseCreateLead(
   if (!input.employer?.trim()) throw new Error("Employer is required.");
 
   const { client, userId: uid } = await getUserClient(userId);
-
-  const { count, error: countError } = await client
-    .from("job_leads")
-    .select("*", { count: "exact", head: true })
-    .eq("user_id", uid)
-    .eq("region", input.region);
-
-  if (countError) throw new Error(countError.message);
-  if ((count ?? 0) >= MAX_LEADS_PER_REGION) {
-    throw new Error(
-      `Maximum of ${MAX_LEADS_PER_REGION} leads per region reached for ${input.region}.`
-    );
-  }
 
   const { data, error } = await client
     .from("job_leads")

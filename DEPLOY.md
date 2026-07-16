@@ -37,6 +37,17 @@ Local mode (`data/leads.json`) still works on your PC when Supabase env vars are
 4. Paste and click **Run**
 5. You should see "Success"
 
+### Already deployed? Remove the old 10-lead cap
+
+If your project was set up earlier, a database trigger still blocks more than 10 leads per region even after app updates. Run this once in **SQL Editor**:
+
+```sql
+DROP TRIGGER IF EXISTS job_leads_region_limit ON job_leads;
+DROP FUNCTION IF EXISTS enforce_region_lead_limit();
+```
+
+(Or paste `supabase/migrations/003_drop_region_lead_limit.sql`.)
+
 ---
 
 ## Step 3 — Enable email login

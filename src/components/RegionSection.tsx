@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LeadForm } from "@/components/LeadForm";
 import { LeadsTable } from "@/components/LeadsTable";
-import { MAX_LEADS_PER_REGION, PRIORITY_RANK } from "@/lib/constants";
+import { PRIORITY_RANK } from "@/lib/constants";
 import type { JobLead, Region } from "@/lib/types";
 
 interface RegionSectionProps {
@@ -45,7 +45,6 @@ export function RegionSection({ regionId, label, leads, searchQuery }: RegionSec
     });
   }, [leads, searchQuery, sortAsc]);
 
-  const atLimit = leads.length >= MAX_LEADS_PER_REGION;
   const hasSearch = searchQuery.trim().length > 0;
 
   if (hasSearch && filteredLeads.length === 0) {
@@ -63,7 +62,7 @@ export function RegionSection({ regionId, label, leads, searchQuery }: RegionSec
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
           {label}
           <Badge variant="outline">
-            {leads.length}/{MAX_LEADS_PER_REGION}
+            {leads.length} {leads.length === 1 ? "lead" : "leads"}
           </Badge>
           {hasSearch && (
             <span className="text-sm font-normal text-[var(--color-muted-foreground)]">
@@ -77,7 +76,7 @@ export function RegionSection({ regionId, label, leads, searchQuery }: RegionSec
             {sortAsc ? <ArrowDownAZ className="h-4 w-4" /> : <ArrowUpAZ className="h-4 w-4" />}
             Sort by Priority
           </Button>
-          <Button size="sm" onClick={() => setFormOpen(true)} disabled={atLimit}>
+          <Button size="sm" onClick={() => setFormOpen(true)}>
             <Plus className="h-4 w-4" />
             Add Lead
           </Button>
@@ -86,11 +85,6 @@ export function RegionSection({ regionId, label, leads, searchQuery }: RegionSec
 
       {open && (
         <div className="p-4">
-          {atLimit && (
-            <p className="mb-3 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
-              This region is at the {MAX_LEADS_PER_REGION}-lead limit. Delete a lead to add another.
-            </p>
-          )}
           <LeadsTable leads={filteredLeads} />
         </div>
       )}

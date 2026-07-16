@@ -56,29 +56,6 @@ CREATE TRIGGER job_leads_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION set_updated_at();
 
--- 10-lead cap per region per user
-CREATE OR REPLACE FUNCTION enforce_region_lead_limit()
-RETURNS TRIGGER AS $$
-DECLARE
-  lead_count INTEGER;
-BEGIN
-  SELECT COUNT(*) INTO lead_count
-  FROM job_leads
-  WHERE user_id = NEW.user_id AND region = NEW.region;
-
-  IF lead_count >= 10 THEN
-    RAISE EXCEPTION 'Maximum of 10 leads per region reached for %', NEW.region;
-  END IF;
-
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER job_leads_region_limit
-  BEFORE INSERT ON job_leads
-  FOR EACH ROW
-  EXECUTE FUNCTION enforce_region_lead_limit();
-
 -- Row Level Security
 ALTER TABLE job_leads ENABLE ROW LEVEL SECURITY;
 

@@ -57,7 +57,7 @@ export function Dashboard({ leads, isCloud = false, buildId = "dev" }: Dashboard
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Healthcare Admin Job Tracker</h1>
           <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
-            Track up to 10 leads per region. Search, sort, and export your applications.
+            Track unlimited leads per region. Search, sort, and export your applications.
           </p>
         </div>
         {isCloud && (

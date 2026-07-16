@@ -2,7 +2,7 @@
 
 Reference for the tracker and the job-search agent API.
 
-## Regions (max 10 leads each)
+## Regions (unlimited leads each)
 
 | ID | Label |
 |----|-------|
@@ -33,7 +33,7 @@ Reference for the tracker and the job-search agent API.
 
 ## Rules
 
-1. Max 10 leads per region — enforced on create (API returns error if full)
+1. No per-region lead limit — add as many leads as you need
 2. Region cannot be changed after a lead is created
-3. Agent should check `slots_available` before POSTing (see `GET /api/agent/leads`)
+3. Agent can list existing leads via `GET /api/agent/leads` before POSTing
 4. VA column does not exist (was a typo)

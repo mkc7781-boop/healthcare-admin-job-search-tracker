@@ -10,7 +10,7 @@ Use alongside [README.md](./README.md) for setup and [JOB_AGENT_API.md](./JOB_AG
 
 A job tracker for healthcare admin applications:
 
-- Six fixed regions, **max 10 leads each**
+- Six fixed regions, **unlimited leads each**
 - Full tracking table with priority/status colors
 - Search, sort, export (CSV/Excel), add/edit/delete
 - **Agent-friendly:** your job-search AI fills the tracker via REST API — no manual copy-paste
@@ -98,7 +98,7 @@ Your agent reads [JOB_AGENT_API.md](./JOB_AGENT_API.md) and calls:
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
 | GET | `/api/agent/schema` | Learn all fields, regions, example body |
-| GET | `/api/agent/leads` | List leads + `slots_available` per region |
+| GET | `/api/agent/leads` | List leads + per-region counts |
 | POST | `/api/agent/leads` | Add one lead |
 | POST | `/api/agent/leads/bulk` | Add multiple leads at once |
 | PATCH | `/api/agent/leads/{id}` | Update a lead |
@@ -110,7 +110,7 @@ No API key required locally. Optional `AGENT_API_KEY` in `.env.local` for produc
 
 ```
 1. GET /api/agent/schema
-2. GET /api/agent/leads          → check slots_available
+2. GET /api/agent/leads          → see existing leads
 3. Search for jobs (agent's job)
 4. POST /api/agent/leads         → one lead per good match
 5. You review at http://localhost:3000
@@ -136,7 +136,7 @@ healthcare-admin-job-search-tracker-app/
     ├── components/               ← UI
     └── lib/
         ├── db.ts                 ← JSON file read/write
-        ├── leads.ts              ← business logic + 10-lead cap
+        ├── leads.ts              ← business logic
         ├── actions.ts            ← server actions for UI
         └── types.ts, constants.ts, export.ts
 ```
@@ -151,7 +151,7 @@ healthcare-admin-job-search-tracker-app/
 ### Phase 2 — Storage + types
 - [x] JSON file storage (`data/leads.json`)
 - [x] Types and constants
-- [x] 10-lead cap enforcement
+- [x] Unlimited leads per region (cap removed)
 
 ### Phase 3 — Dashboard UI
 - [x] Six region sections
