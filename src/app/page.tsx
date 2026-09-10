@@ -1,18 +1,9 @@
 import { Dashboard } from "@/components/Dashboard";
 import { TrackerLoadError } from "@/components/TrackerLoadError";
-import { getAuthenticatedUserId } from "@/lib/auth";
 import { isCloudMode } from "@/lib/config";
 import { getAllLeads } from "@/lib/leads";
 
 export const dynamic = "force-dynamic";
-
-function isAuthMessage(message: string) {
-  return (
-    message.includes("Not signed in") ||
-    message.includes("Authentication error") ||
-    message.includes("JWT")
-  );
-}
 
 export default async function HomePage() {
   const cloud = isCloudMode();
@@ -21,15 +12,6 @@ export default async function HomePage() {
     return (
       <TrackerLoadError message="Cloud database not configured. Add Supabase environment variables in Vercel and redeploy." />
     );
-  }
-
-  if (cloud) {
-    const userId = await getAuthenticatedUserId();
-    if (!userId) {
-      return (
-        <TrackerLoadError message="Tracker owner is not configured. Set TRACKER_OWNER_USER_ID in Vercel." />
-      );
-    }
   }
 
   try {
@@ -41,6 +23,6 @@ export default async function HomePage() {
     return <Dashboard leads={leads} isCloud={cloud} buildId={buildId} />;
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error loading leads.";
-    return <TrackerLoadError message={isAuthMessage(message) ? "Not signed in. Please sign in again." : message} />;
+    return <TrackerLoadError message={message} />;
   }
 }

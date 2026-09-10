@@ -25,15 +25,11 @@ export default function Error({
         <h1 className="text-xl font-bold">Unable to load tracker</h1>
         <p className="mt-2 text-sm text-[var(--color-muted-foreground)]">{message}</p>
         <ul className="mt-4 list-inside list-disc space-y-1 text-sm text-[var(--color-muted-foreground)]">
-          <li>Sign out and sign back in</li>
           <li>Confirm the Supabase database migration was run</li>
           <li>Check Vercel environment variables are set</li>
         </ul>
         <div className="mt-6 flex flex-wrap gap-2">
           <Button onClick={() => reset()}>Try again</Button>
-          <Button variant="outline" onClick={() => (window.location.href = "/login")}>
-            Go to Sign In
-          </Button>
         </div>
         {error.digest && (
           <p className="mt-4 text-xs text-[var(--color-muted-foreground)]">

@@ -32,24 +32,10 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Refresh session cookies before checking auth.
   await supabase.auth.getSession();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  await supabase.auth.getUser();
 
-  const isLoginPage = request.nextUrl.pathname.startsWith("/login");
-  const isAuthCallback = request.nextUrl.pathname.startsWith("/auth");
-  const isAgentApi = request.nextUrl.pathname.startsWith("/api/agent");
-  const ownerBypass = Boolean(process.env.TRACKER_OWNER_USER_ID);
-
-  if (!user && !ownerBypass && !isLoginPage && !isAuthCallback && !isAgentApi) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
-
-  if (isLoginPage && (user || ownerBypass)) {
+  if (request.nextUrl.pathname.startsWith("/login")) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);

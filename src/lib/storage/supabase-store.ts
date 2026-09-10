@@ -1,4 +1,5 @@
-import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { getTrackerOwnerUserId } from "@/lib/config";
+import { createServiceClient } from "@/lib/supabase/server";
 import type { JobLead, JobLeadInput, Region } from "@/lib/types";
 
 type DbLead = JobLead & { user_id: string };
@@ -10,17 +11,17 @@ function mapRow(row: DbLead): JobLead {
 }
 
 async function getUserClient(userId?: string) {
-  if (userId) {
-    return { client: createServiceClient(), userId };
+  const client = createServiceClient();
+  let uid = userId || getTrackerOwnerUserId();
+  if (!uid) {
+    const { data, error } = await client.from("job_leads").select("user_id").limit(1).maybeSingle();
+    if (error) throw new Error(formatDbError(error.message));
+    uid = data?.user_id ?? null;
   }
-  const client = await createClient();
-  const {
-    data: { user },
-    error,
-  } = await client.auth.getUser();
-  if (error) throw new Error(`Authentication error: ${error.message}`);
-  if (!user) throw new Error("Not signed in. Please sign in again.");
-  return { client, userId: user.id };
+  if (!uid) {
+    throw new Error("Tracker owner is not configured. Set TRACKER_OWNER_USER_ID in Vercel.");
+  }
+  return { client, userId: uid };
 }
 
 function formatDbError(message: string): string {

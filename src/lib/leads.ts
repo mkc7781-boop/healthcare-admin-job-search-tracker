@@ -3,27 +3,20 @@ import * as json from "@/lib/storage/json-store";
 import * as supabase from "@/lib/storage/supabase-store";
 import type { JobLead, JobLeadInput, Region } from "@/lib/types";
 
-/** User ID for agent API in cloud mode (service role inserts). */
-export function getAgentUserId(): string {
-  const id = getTrackerOwnerUserId();
-  if (!id) {
-    throw new Error(
-      "TRACKER_OWNER_USER_ID is not set. See DEPLOY.md after creating your account."
-    );
-  }
-  return id;
+export function getAgentUserId(): string | null {
+  return getTrackerOwnerUserId();
 }
 
 export async function getAllLeads(forAgent = false): Promise<JobLead[]> {
   if (isCloudMode()) {
-    return supabase.supabaseGetAllLeads(getAgentUserId());
+    return supabase.supabaseGetAllLeads(getAgentUserId() ?? undefined);
   }
   return json.jsonGetAllLeads();
 }
 
 export async function getLeadById(id: string, forAgent = false): Promise<JobLead | null> {
   if (isCloudMode()) {
-    return supabase.supabaseGetLeadById(id, getAgentUserId());
+    return supabase.supabaseGetLeadById(id, getAgentUserId() ?? undefined);
   }
   return json.jsonGetLeadById(id);
 }
@@ -33,7 +26,7 @@ export async function createLeadRecord(
   forAgent = false
 ): Promise<JobLead> {
   if (isCloudMode()) {
-    return supabase.supabaseCreateLead(input, getAgentUserId());
+    return supabase.supabaseCreateLead(input, getAgentUserId() ?? undefined);
   }
   return json.jsonCreateLead(input);
 }
@@ -44,21 +37,21 @@ export async function updateLeadRecord(
   forAgent = false
 ): Promise<JobLead> {
   if (isCloudMode()) {
-    return supabase.supabaseUpdateLead(id, input, getAgentUserId());
+    return supabase.supabaseUpdateLead(id, input, getAgentUserId() ?? undefined);
   }
   return json.jsonUpdateLead(id, input);
 }
 
 export async function deleteLeadRecord(id: string, forAgent = false): Promise<void> {
   if (isCloudMode()) {
-    return supabase.supabaseDeleteLead(id, getAgentUserId());
+    return supabase.supabaseDeleteLead(id, getAgentUserId() ?? undefined);
   }
   return json.jsonDeleteLead(id);
 }
 
 export async function getRegionCapacity(forAgent = false): Promise<Record<Region, number>> {
   if (isCloudMode()) {
-    return supabase.supabaseGetRegionCapacity(getAgentUserId());
+    return supabase.supabaseGetRegionCapacity(getAgentUserId() ?? undefined);
   }
   return json.jsonGetRegionCapacity();
 }

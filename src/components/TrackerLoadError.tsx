@@ -7,11 +7,6 @@ interface TrackerLoadErrorProps {
 }
 
 export function TrackerLoadError({ message }: TrackerLoadErrorProps) {
-  const isAuthError =
-    message.includes("Not signed in") ||
-    message.includes("Authentication") ||
-    message.includes("JWT");
-
   const isConfigError =
     message.includes("environment variables") ||
     message.includes("Cloud database not configured");
@@ -44,16 +39,7 @@ export function TrackerLoadError({ message }: TrackerLoadErrorProps) {
           </p>
         )}
 
-        {isAuthError && (
-          <p className="mt-3 text-sm text-[var(--color-muted-foreground)]">
-            Sign in with the same email and password you created in Supabase.
-          </p>
-        )}
-
         <div className="mt-6 flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => (window.location.href = "/login")}>
-            Go to Sign In
-          </Button>
           <Button onClick={() => window.location.reload()}>Try again</Button>
         </div>
       </div>

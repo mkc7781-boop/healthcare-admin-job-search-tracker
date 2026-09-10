@@ -1,6 +1,5 @@
 "use server";
 
-import { getAuthenticatedUserId } from "@/lib/auth";
 import { actionError, type ActionResult } from "@/lib/action-result";
 import { isCloudMode } from "@/lib/config";
 import {
@@ -12,22 +11,12 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import type { JobLead, JobLeadInput } from "@/lib/types";
 
-async function ensureCloudAuth() {
-  if (!isCloudMode()) return;
-  const userId = await getAuthenticatedUserId();
-  if (!userId) {
-    throw new Error("Tracker owner is not configured.");
-  }
-}
-
 export async function getLeads(): Promise<JobLead[]> {
-  await ensureCloudAuth();
   return getAllLeads();
 }
 
 export async function createLead(input: JobLeadInput): Promise<ActionResult> {
   try {
-    await ensureCloudAuth();
     await createLeadRecord(input);
     return { ok: true };
   } catch (err) {
@@ -40,7 +29,6 @@ export async function updateLead(
   input: Partial<JobLeadInput>
 ): Promise<ActionResult> {
   try {
-    await ensureCloudAuth();
     await updateLeadRecord(id, input);
     return { ok: true };
   } catch (err) {
@@ -50,7 +38,6 @@ export async function updateLead(
 
 export async function deleteLead(id: string): Promise<ActionResult> {
   try {
-    await ensureCloudAuth();
     await deleteLeadRecord(id);
     return { ok: true };
   } catch (err) {
