@@ -27,6 +27,16 @@ function createWindow() {
     },
   });
 
+  const hideVisibleScrollbars = `
+    html, body { scrollbar-width: none; }
+    html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+    .overflow-x-auto::-webkit-scrollbar:vertical { display: none; width: 0; }
+    .overflow-x-auto::-webkit-scrollbar-track, .overflow-x-auto::-webkit-scrollbar-thumb { background: #ffffff; }
+  `;
+  win.webContents.on("did-finish-load", () => {
+    win.webContents.insertCSS(hideVisibleScrollbars).catch(() => {});
+  });
+
   // Always load the latest cloud app (avoid stale cached JS after deploys).
   win.webContents.session.clearCache().finally(() => {
     win.loadURL(APP_URL);
