@@ -36,9 +36,22 @@ body {
 
 .overflow-x-auto {
   overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff #ffffff;
 }
 .overflow-x-auto::-webkit-scrollbar {
+  height: 12px;
+  width: 0;
+}
+.overflow-x-auto::-webkit-scrollbar:vertical {
   display: none;
+  width: 0;
+  height: 0;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #ffffff;
 }
