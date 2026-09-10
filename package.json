@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test:api": "node scripts/test-agent-api.mjs",
+    "test:jobs": "node scripts/test-add-delete-unlimited.mjs",
     "test:all": "node scripts/test-all.mjs",
     "test:confetti": "node scripts/test-confetti.mjs",
     "test:desktop": "node scripts/test-desktop-app.mjs",

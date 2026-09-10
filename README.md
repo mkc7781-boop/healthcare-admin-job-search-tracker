@@ -55,7 +55,7 @@ Employer, Career Site, Position, City, Min Requirements, Priority (color-coded),
 
 Give your agent **[JOB_AGENT_API.md](./JOB_AGENT_API.md)**. It explains how to:
 
-1. Check open slots per region
+1. List existing jobs
 2. POST new job leads as JSON
 3. Update or delete leads
 

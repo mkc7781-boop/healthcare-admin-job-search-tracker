@@ -172,6 +172,10 @@ const local = runNode(join(root, "scripts", "test-agent-api.mjs"));
 if (local.status === 0) pass("Local agent API");
 else fail("Local agent API", (local.stdout || local.stderr || "").trim().split("\n").pop());
 
+const unlimited = runNode(join(root, "scripts", "test-add-delete-unlimited.mjs"));
+if (unlimited.status === 0) pass("Add/delete unlimited jobs");
+else fail("Add/delete unlimited jobs", (unlimited.stdout || unlimited.stderr || "").trim().split("\n").pop());
+
 stopDevServer();
 await new Promise((r) => setTimeout(r, 2000));
 

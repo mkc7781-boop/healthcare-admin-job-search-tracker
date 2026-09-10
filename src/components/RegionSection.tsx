@@ -78,7 +78,7 @@ export function RegionSection({ regionId, label, leads, searchQuery }: RegionSec
           </Button>
           <Button size="sm" onClick={() => setFormOpen(true)}>
             <Plus className="h-4 w-4" />
-            Add Lead
+            Add job
           </Button>
         </div>
       </div>

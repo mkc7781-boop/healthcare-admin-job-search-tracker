@@ -30,6 +30,12 @@ function formatDbError(message: string): string {
   if (message.includes("permission denied for table job_leads")) {
     return "Database permissions missing. Run 002_job_leads_grants.sql in Supabase SQL Editor (see DEPLOY.md).";
   }
+  if (
+    /Maximum of \d+ leads per region/i.test(message) ||
+    message.includes("enforce_region_lead_limit")
+  ) {
+    return "The database still has the old 10-job-per-region limit. Run supabase/migrations/003_drop_region_lead_limit.sql in the Supabase SQL Editor, then try again.";
+  }
   return message;
 }
 
@@ -57,7 +63,7 @@ export async function supabaseGetLeadById(
     .eq("user_id", uid)
     .maybeSingle();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(formatDbError(error.message));
   return data ? mapRow(data as DbLead) : null;
 }
 
@@ -90,7 +96,7 @@ export async function supabaseCreateLead(
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(formatDbError(error.message));
   return mapRow(data as DbLead);
 }
 
@@ -137,14 +143,20 @@ export async function supabaseUpdateLead(
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(formatDbError(error.message));
   return mapRow(data as DbLead);
 }
 
 export async function supabaseDeleteLead(id: string, userId?: string): Promise<void> {
   const { client, userId: uid } = await getUserClient(userId);
-  const { error } = await client.from("job_leads").delete().eq("id", id).eq("user_id", uid);
-  if (error) throw new Error(error.message);
+  const { data, error } = await client
+    .from("job_leads")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", uid)
+    .select("id");
+  if (error) throw new Error(formatDbError(error.message));
+  if (!data?.length) throw new Error("Job not found or could not be deleted.");
 }
 
 export async function supabaseGetRegionCapacity(

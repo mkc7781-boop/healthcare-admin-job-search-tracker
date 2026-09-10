@@ -155,11 +155,11 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Lead" : "Add Lead"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Edit job" : "Add job"}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update the details for this job lead."
-              : "Add a new job lead to this region."}
+              ? "Update the details for this job."
+              : "Add a new job to this region. There is no limit on how many you can add."}
           </DialogDescription>
         </DialogHeader>
 
@@ -316,7 +316,7 @@ export function LeadForm({ open, onOpenChange, region = "sacramento", lead }: Le
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : isEdit ? "Save Changes" : "Add Lead"}
+              {isPending ? "Saving..." : isEdit ? "Save Changes" : "Add job"}
             </Button>
           </div>
         </form>

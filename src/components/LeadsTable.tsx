@@ -28,6 +28,8 @@ function formatDate(value: string | null) {
   return `${month}/${day}/${year}`;
 }
 
+const ACTION_COL = { header: "Actions", minWidth: "min-w-[168px]" };
+
 const COLUMNS: { header: string; minWidth: string }[] = [
   { header: "Employer", minWidth: "min-w-[180px]" },
   { header: "Career Site", minWidth: "min-w-[100px]" },
@@ -41,8 +43,10 @@ const COLUMNS: { header: string; minWidth: string }[] = [
   { header: "Due Date", minWidth: "min-w-[100px]" },
   { header: "Contact", minWidth: "min-w-[160px]" },
   { header: "Notes", minWidth: "min-w-[140px]" },
-  { header: "Actions", minWidth: "min-w-[90px]" },
 ];
+
+const stickyActionClass =
+  "sticky left-0 z-10 border-r border-[var(--color-border)] shadow-[2px_0_8px_rgba(15,23,42,0.08)]";
 
 interface LeadsTableProps {
   leads: JobLead[];
@@ -50,30 +54,44 @@ interface LeadsTableProps {
 
 export function LeadsTable({ leads }: LeadsTableProps) {
   const [editingLead, setEditingLead] = useState<JobLead | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   function handleDelete(id: string) {
+    setDeleteError(null);
     startTransition(async () => {
       const result = await deleteLead(id);
-      if (result.ok) router.refresh();
+      if (result.ok) {
+        router.refresh();
+        return;
+      }
+      setDeleteError(result.error);
     });
   }
 
   if (leads.length === 0) {
     return (
       <p className="rounded-md border border-dashed border-[var(--color-border)] bg-[var(--color-muted)] px-4 py-8 text-center text-sm text-[var(--color-muted-foreground)]">
-        No leads in this section yet.
+        No jobs in this section yet. Use Add job to add as many as you need.
       </p>
     );
   }
 
   return (
     <>
+      {deleteError && (
+        <p className="mb-3 text-sm text-[var(--color-destructive)]">{deleteError}</p>
+      )}
       <div className="w-full overflow-x-auto rounded-md border border-[var(--color-border)]">
         <table className="w-max min-w-full table-auto text-left text-sm">
           <thead className="bg-[var(--color-muted)]">
             <tr>
+              <th
+                className={`px-4 py-3 font-medium whitespace-nowrap ${ACTION_COL.minWidth} ${stickyActionClass} bg-[var(--color-muted)]`}
+              >
+                {ACTION_COL.header}
+              </th>
               {COLUMNS.map((col) => (
                 <th
                   key={col.header}
@@ -87,6 +105,53 @@ export function LeadsTable({ leads }: LeadsTableProps) {
           <tbody>
             {leads.map((lead) => (
               <tr key={lead.id} className="border-t border-[var(--color-border)] align-top">
+                <td
+                  className={`px-4 py-3 ${ACTION_COL.minWidth} ${stickyActionClass} bg-[var(--color-card)]`}
+                >
+                  <div className="flex flex-wrap gap-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setEditingLead(lead)}
+                      aria-label={`Edit ${lead.employer}`}
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                      Edit
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          aria-label={`Remove ${lead.employer}`}
+                          className="text-[var(--color-destructive)]"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                          Remove
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Remove this job?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently remove {lead.employer} —{" "}
+                            {lead.position || "position unknown"} from your tracker.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDelete(lead.id)}
+                            disabled={isPending}
+                            className="bg-[var(--color-destructive)] text-[var(--color-destructive-foreground)] hover:opacity-90"
+                          >
+                            Remove
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </td>
                 <td className={`px-4 py-3 font-medium ${COLUMNS[0].minWidth}`}>
                   {lead.employer}
                 </td>
@@ -129,44 +194,6 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                 </td>
                 <td className={`px-4 py-3 ${COLUMNS[11].minWidth}`}>
                   <NotesCell lead={lead} />
-                </td>
-                <td className={`px-4 py-3 ${COLUMNS[12].minWidth}`}>
-                  <div className="flex gap-1">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setEditingLead(lead)}
-                      aria-label="Edit lead"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon" aria-label="Delete lead">
-                          <Trash2 className="h-4 w-4 text-[var(--color-destructive)]" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete this lead?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This will permanently remove {lead.employer} —{" "}
-                            {lead.position || "position unknown"} from your tracker.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDelete(lead.id)}
-                            disabled={isPending}
-                            className="bg-[var(--color-destructive)] text-[var(--color-destructive-foreground)] hover:opacity-90"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
                 </td>
               </tr>
             ))}

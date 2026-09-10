@@ -147,14 +147,14 @@ There is **no per-region lead limit**. You can POST as many leads as needed.
 }
 ```
 
-Returns `created` array and `errors` array (e.g. if a region is full).
+Returns `created` array and `errors` array (per-item failures, if any).
 
 ---
 
 ## Example: curl
 
 ```bash
-# Check open slots
+# List current jobs
 curl http://localhost:3000/api/agent/leads
 
 # Add a lead

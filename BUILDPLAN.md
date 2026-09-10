@@ -43,12 +43,12 @@ flowchart TB
 
 | Region ID | Display name | Max leads |
 |-----------|--------------|-----------|
-| `sacramento` | Sacramento | 10 |
-| `bay_area` | Bay Area | 10 |
-| `northern_california` | Northern California | 10 |
-| `government` | Government Jobs | 10 |
-| `state_of_california` | State of California | 10 |
-| `remote` | Remote (Work from Home) | 10 |
+| `sacramento` | Sacramento | unlimited |
+| `bay_area` | Bay Area | unlimited |
+| `northern_california` | Northern California | unlimited |
+| `government` | Government Jobs | unlimited |
+| `state_of_california` | State of California | unlimited |
+| `remote` | Remote (Work from Home) | unlimited |
 
 ---
 
@@ -79,8 +79,8 @@ VA column intentionally omitted (user typo).
 ### Route: `/`
 
 - Global search + Export CSV/Excel
-- Six collapsible region sections (`3/10` counter each)
-- Per region: Add Lead, Sort by Priority, data table
+- Six collapsible region sections (unlimited leads each)
+- Per region: Add job, Sort by Priority, data table
 - Edit modal, delete with confirmation
 - Priority badges: High=red, Medium=amber, Low=slate
 - Status badges: Need to apply=blue, Applied=amber, Interviewing=green, Rejected=gray
