@@ -35,19 +35,18 @@ body {
 }
 
 .overflow-x-auto {
+  max-height: 28rem;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #ffffff #ffffff;
 }
-.overflow-x-auto::-webkit-scrollbar {
+.overflow-x-auto::-webkit-scrollbar:horizontal {
   height: 12px;
-  width: 0;
 }
 .overflow-x-auto::-webkit-scrollbar:vertical {
   display: none;
   width: 0;
-  height: 0;
 }
 .overflow-x-auto::-webkit-scrollbar-track {
   background: #ffffff;
