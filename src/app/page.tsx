@@ -8,12 +8,6 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const cloud = isCloudMode();
 
-  if (!cloud && process.env.VERCEL) {
-    return (
-      <TrackerLoadError message="Cloud database not configured. Add Supabase environment variables in Vercel and redeploy." />
-    );
-  }
-
   try {
     const leads = await getAllLeads();
     const buildId =

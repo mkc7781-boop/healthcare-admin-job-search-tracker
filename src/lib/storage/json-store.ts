@@ -2,7 +2,9 @@ import { promises as fs } from "fs";
 import path from "path";
 import type { JobLead, JobLeadInput, Region } from "@/lib/types";
 
-const DATA_DIR = path.join(process.cwd(), "data");
+const DATA_DIR = process.env.VERCEL
+  ? path.join("/tmp", "job-tracker-data")
+  : path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "leads.json");
 
 function now() {
