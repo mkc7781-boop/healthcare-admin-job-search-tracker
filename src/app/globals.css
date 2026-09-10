@@ -34,8 +34,11 @@ body {
     Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Horizontal scroll for wide tables — scrollbar always visible when needed */
 .overflow-x-auto {
   overflow-x: auto;
-  scrollbar-gutter: stable;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
 }

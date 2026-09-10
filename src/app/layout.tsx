@@ -22,6 +22,11 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="theme-color" content="#0f766e" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.style.filter="brightness("+(localStorage.getItem("brightness")||100)+"%)"`,
+          }}
+        />
       </head>
       <body className="min-h-screen antialiased">{children}</body>
     </html>

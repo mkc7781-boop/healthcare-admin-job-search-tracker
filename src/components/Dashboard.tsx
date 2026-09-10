@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { LogOut, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ExportButtons } from "@/components/ExportButtons";
@@ -35,8 +35,20 @@ function matchesSearch(lead: JobLead, query: string) {
 
 export function Dashboard({ leads, isCloud = false, buildId = "dev" }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [brightness, setBrightness] = useState(100);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  useEffect(() => {
+    const n = Number(localStorage.getItem("brightness") || 100);
+    if (Number.isFinite(n)) setBrightness(n);
+  }, []);
+
+  function onBrightness(n: number) {
+    setBrightness(n);
+    localStorage.setItem("brightness", String(n));
+    document.documentElement.style.filter = `brightness(${n}%)`;
+  }
 
   const exportLeads = useMemo(
     () => leads.filter((lead) => matchesSearch(lead, searchQuery)),
@@ -60,23 +72,37 @@ export function Dashboard({ leads, isCloud = false, buildId = "dev" }: Dashboard
             Add as many jobs as you want. Use Remove on the left of each row to delete one.
           </p>
         </div>
-        {isCloud && (
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={isPending}
-            onClick={() =>
-              startTransition(async () => {
-                await signOut();
-                router.push("/login");
-                router.refresh();
-              })
-            }
-          >
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </Button>
-        )}
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-sm text-[var(--color-muted-foreground)]">
+            Brightness
+            <input
+              type="range"
+              min={50}
+              max={150}
+              value={brightness}
+              onChange={(e) => onBrightness(Number(e.target.value))}
+              className="h-2 w-36 cursor-pointer accent-[var(--color-primary)]"
+              aria-label="Brightness"
+            />
+          </label>
+          {isCloud && (
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={isPending}
+              onClick={() =>
+                startTransition(async () => {
+                  await signOut();
+                  router.push("/login");
+                  router.refresh();
+                })
+              }
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </Button>
+          )}
+        </div>
       </header>
 
       {isCloud ? (
