@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Smartphone } from "lucide-react";
 import { ExportButtons } from "@/components/ExportButtons";
 import { RegionSection } from "@/components/RegionSection";
 import { SearchBar } from "@/components/SearchBar";
@@ -10,7 +9,6 @@ import type { JobLead } from "@/lib/types";
 
 interface DashboardProps {
   leads: JobLead[];
-  isCloud?: boolean;
   buildId?: string;
 }
 
@@ -30,7 +28,7 @@ function matchesSearch(lead: JobLead, query: string) {
   return haystack.includes(query.toLowerCase());
 }
 
-export function Dashboard({ leads, isCloud = false, buildId = "dev" }: DashboardProps) {
+export function Dashboard({ leads, buildId = "dev" }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [brightness, setBrightness] = useState(100);
 
@@ -84,27 +82,6 @@ export function Dashboard({ leads, isCloud = false, buildId = "dev" }: Dashboard
         </div>
       </header>
 
-      {isCloud ? (
-        <div className="flex items-start gap-2 rounded-lg border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
-          <Smartphone className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            <strong>Cloud sync enabled.</strong> Open this same URL on your phone or any device —
-            sign in with the same account and your leads sync automatically.
-          </span>
-        </div>
-      ) : (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          <strong>Local mode.</strong> Data is stored on this computer only. See{" "}
-          <code className="rounded bg-white/60 px-1">DEPLOY.md</code> to enable cross-device sync.
-        </div>
-      )}
-
-      <div className="rounded-lg border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
-        <strong>Job-search agent:</strong> POST leads to{" "}
-        <code className="rounded bg-white/60 px-1">/api/agent/leads</code>. See{" "}
-        <code className="rounded bg-white/60 px-1">JOB_AGENT_API.md</code> for the full API.
-      </div>
-
       <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] p-4">
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
         <ExportButtons leads={exportLeads} />
@@ -124,7 +101,6 @@ export function Dashboard({ leads, isCloud = false, buildId = "dev" }: Dashboard
 
       <p className="pb-2 text-center text-xs text-[var(--color-muted-foreground)]">
         Build {buildId}
-        {isCloud ? " · cloud sync" : " · local mode"}
       </p>
     </div>
   );
