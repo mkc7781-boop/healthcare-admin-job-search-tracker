@@ -16,14 +16,14 @@ export function getAgentUserId(): string {
 
 export async function getAllLeads(forAgent = false): Promise<JobLead[]> {
   if (isCloudMode()) {
-    return supabase.supabaseGetAllLeads(forAgent ? getAgentUserId() : undefined);
+    return supabase.supabaseGetAllLeads(getAgentUserId());
   }
   return json.jsonGetAllLeads();
 }
 
 export async function getLeadById(id: string, forAgent = false): Promise<JobLead | null> {
   if (isCloudMode()) {
-    return supabase.supabaseGetLeadById(id, forAgent ? getAgentUserId() : undefined);
+    return supabase.supabaseGetLeadById(id, getAgentUserId());
   }
   return json.jsonGetLeadById(id);
 }
@@ -33,7 +33,7 @@ export async function createLeadRecord(
   forAgent = false
 ): Promise<JobLead> {
   if (isCloudMode()) {
-    return supabase.supabaseCreateLead(input, forAgent ? getAgentUserId() : undefined);
+    return supabase.supabaseCreateLead(input, getAgentUserId());
   }
   return json.jsonCreateLead(input);
 }
@@ -44,21 +44,21 @@ export async function updateLeadRecord(
   forAgent = false
 ): Promise<JobLead> {
   if (isCloudMode()) {
-    return supabase.supabaseUpdateLead(id, input, forAgent ? getAgentUserId() : undefined);
+    return supabase.supabaseUpdateLead(id, input, getAgentUserId());
   }
   return json.jsonUpdateLead(id, input);
 }
 
 export async function deleteLeadRecord(id: string, forAgent = false): Promise<void> {
   if (isCloudMode()) {
-    return supabase.supabaseDeleteLead(id, forAgent ? getAgentUserId() : undefined);
+    return supabase.supabaseDeleteLead(id, getAgentUserId());
   }
   return json.jsonDeleteLead(id);
 }
 
 export async function getRegionCapacity(forAgent = false): Promise<Record<Region, number>> {
   if (isCloudMode()) {
-    return supabase.supabaseGetRegionCapacity(forAgent ? getAgentUserId() : undefined);
+    return supabase.supabaseGetRegionCapacity(getAgentUserId());
   }
   return json.jsonGetRegionCapacity();
 }

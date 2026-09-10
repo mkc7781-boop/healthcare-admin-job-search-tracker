@@ -16,7 +16,7 @@ async function ensureCloudAuth() {
   if (!isCloudMode()) return;
   const userId = await getAuthenticatedUserId();
   if (!userId) {
-    throw new Error("Not signed in. Please sign in again.");
+    throw new Error("Tracker owner is not configured.");
   }
 }
 

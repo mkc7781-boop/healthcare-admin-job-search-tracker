@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { isCloudMode } from "@/lib/config";
+import { getTrackerOwnerUserId, isCloudMode } from "@/lib/config";
 import { createClient } from "@/lib/supabase/server";
 
 export async function getAuthenticatedUserId(): Promise<string | null> {
@@ -11,8 +11,8 @@ export async function getAuthenticatedUserId(): Promise<string | null> {
     error,
   } = await supabase.auth.getUser();
 
-  if (error || !user) return null;
-  return user.id;
+  if (!error && user) return user.id;
+  return getTrackerOwnerUserId();
 }
 
 /** Redirects to /login when cloud mode has no session. */

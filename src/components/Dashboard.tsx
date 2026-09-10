@@ -1,13 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useTransition } from "react";
-import { LogOut, Smartphone } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useMemo, useState } from "react";
+import { Smartphone } from "lucide-react";
 import { ExportButtons } from "@/components/ExportButtons";
 import { RegionSection } from "@/components/RegionSection";
 import { SearchBar } from "@/components/SearchBar";
-import { signOut } from "@/lib/actions";
 import { REGIONS } from "@/lib/constants";
 import type { JobLead } from "@/lib/types";
 
@@ -36,8 +33,6 @@ function matchesSearch(lead: JobLead, query: string) {
 export function Dashboard({ leads, isCloud = false, buildId = "dev" }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [brightness, setBrightness] = useState(100);
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   useEffect(() => {
     const n = Number(localStorage.getItem("brightness") || 100);
@@ -85,23 +80,7 @@ export function Dashboard({ leads, isCloud = false, buildId = "dev" }: Dashboard
               aria-label="Brightness"
             />
           </label>
-          {isCloud && (
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={isPending}
-              onClick={() =>
-                startTransition(async () => {
-                  await signOut();
-                  router.push("/login");
-                  router.refresh();
-                })
-              }
-            >
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </Button>
-          )}
+
         </div>
       </header>
 

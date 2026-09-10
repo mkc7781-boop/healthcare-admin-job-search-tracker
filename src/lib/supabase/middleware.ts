@@ -41,14 +41,15 @@ export async function updateSession(request: NextRequest) {
   const isLoginPage = request.nextUrl.pathname.startsWith("/login");
   const isAuthCallback = request.nextUrl.pathname.startsWith("/auth");
   const isAgentApi = request.nextUrl.pathname.startsWith("/api/agent");
+  const ownerBypass = Boolean(process.env.TRACKER_OWNER_USER_ID);
 
-  if (!user && !isLoginPage && !isAuthCallback && !isAgentApi) {
+  if (!user && !ownerBypass && !isLoginPage && !isAuthCallback && !isAgentApi) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  if (user && isLoginPage) {
+  if (isLoginPage && (user || ownerBypass)) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);

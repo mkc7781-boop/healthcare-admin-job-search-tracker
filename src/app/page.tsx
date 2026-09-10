@@ -26,7 +26,9 @@ export default async function HomePage() {
   if (cloud) {
     const userId = await getAuthenticatedUserId();
     if (!userId) {
-      return <TrackerLoadError message="Not signed in. Please sign in again." />;
+      return (
+        <TrackerLoadError message="Tracker owner is not configured. Set TRACKER_OWNER_USER_ID in Vercel." />
+      );
     }
   }
 
