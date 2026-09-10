@@ -35,13 +35,13 @@ const COLUMNS: { header: string; minWidth: string }[] = [
   { header: "Career Site", minWidth: "min-w-[100px]" },
   { header: "Position", minWidth: "min-w-[160px]" },
   { header: "City", minWidth: "min-w-[120px]" },
-  { header: "Min Requirements", minWidth: "min-w-[220px]" },
+  { header: "Min Requirements", minWidth: "w-[260px] max-w-[260px]" },
   { header: "Priority", minWidth: "min-w-[100px]" },
   { header: "Status", minWidth: "min-w-[130px]" },
   { header: "Date Applied", minWidth: "min-w-[110px]" },
   { header: "Follow-up", minWidth: "min-w-[100px]" },
   { header: "Due Date", minWidth: "min-w-[100px]" },
-  { header: "Contact", minWidth: "min-w-[160px]" },
+  { header: "Contact", minWidth: "w-[160px] max-w-[160px]" },
   { header: "Notes", minWidth: "min-w-[140px]" },
 ];
 
@@ -171,8 +171,8 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                 </td>
                 <td className={`px-4 py-3 ${COLUMNS[2].minWidth}`}>{lead.position || "—"}</td>
                 <td className={`px-4 py-3 ${COLUMNS[3].minWidth}`}>{lead.city || "—"}</td>
-                <td className={`px-4 py-3 whitespace-pre-wrap ${COLUMNS[4].minWidth}`}>
-                  {lead.min_requirements || "—"}
+                <td className={`px-4 py-3 ${COLUMNS[4].minWidth}`}>
+                  <div className="line-clamp-3 break-words">{lead.min_requirements || "—"}</div>
                 </td>
                 <td className={`px-4 py-3 ${COLUMNS[5].minWidth}`}>
                   <PriorityBadge priority={lead.priority} />
@@ -189,8 +189,8 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                 <td className={`px-4 py-3 whitespace-nowrap ${COLUMNS[9].minWidth}`}>
                   {formatDate(lead.due_date)}
                 </td>
-                <td className={`px-4 py-3 whitespace-pre-wrap ${COLUMNS[10].minWidth}`}>
-                  {lead.contact_recruiter || "—"}
+                <td className={`px-4 py-3 ${COLUMNS[10].minWidth}`}>
+                  <div className="line-clamp-3 break-words">{lead.contact_recruiter || "—"}</div>
                 </td>
                 <td className={`px-4 py-3 ${COLUMNS[11].minWidth}`}>
                   <NotesCell lead={lead} />
