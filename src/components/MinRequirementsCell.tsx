@@ -62,11 +62,11 @@ export function MinRequirementsCell({ lead }: MinRequirementsCellProps) {
       <button
         type="button"
         onClick={handleOpen}
-        className="flex w-full min-w-0 items-start gap-1.5 rounded-md border border-[var(--color-border)] bg-[var(--color-muted)] px-2 py-1.5 text-left text-sm transition-colors hover:border-[var(--color-primary)] hover:bg-white"
+        className="flex w-full min-w-0 items-start gap-1.5 overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-muted)] px-2 py-1.5 text-left text-sm transition-colors hover:border-[var(--color-primary)] hover:bg-white"
         aria-label={preview ? "View and edit minimum requirements" : "Add minimum requirements"}
       >
         <ClipboardList className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--color-primary)]" />
-        <span className="line-clamp-2 text-[var(--color-foreground)]">
+        <span className="min-w-0 flex-1 line-clamp-2 break-words text-[var(--color-foreground)]">
           {preview ?? (
             <span className="text-[var(--color-muted-foreground)]">Add requirements…</span>
           )}
