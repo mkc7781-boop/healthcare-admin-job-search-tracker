@@ -27,12 +27,16 @@ function createWindow() {
     },
   });
 
-  const hideVisibleScrollbars = `
-    .overflow-x-auto { scrollbar-width: none; -ms-overflow-style: none; }
-    .overflow-x-auto::-webkit-scrollbar { display: none; height: 0; width: 0; }
+  const sectionHorizontalScrollbar = `
+    .overflow-x-auto { overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: #cbd5e1 #ffffff; }
+    .overflow-x-auto::-webkit-scrollbar { height: 12px; width: 0; }
+    .overflow-x-auto::-webkit-scrollbar:horizontal { height: 12px; }
+    .overflow-x-auto::-webkit-scrollbar:vertical { display: none; width: 0; }
+    .overflow-x-auto::-webkit-scrollbar-track { background: #ffffff; border-top: 1px solid #e2e8f0; }
+    .overflow-x-auto::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
   `;
   win.webContents.on("did-finish-load", () => {
-    win.webContents.insertCSS(hideVisibleScrollbars).catch(() => {});
+    win.webContents.insertCSS(sectionHorizontalScrollbar).catch(() => {});
   });
 
   // Always load the latest cloud app (avoid stale cached JS after deploys).
