@@ -28,10 +28,8 @@ function createWindow() {
   });
 
   const hideVisibleScrollbars = `
-    html, body { scrollbar-width: none; }
-    html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
-    .overflow-x-auto::-webkit-scrollbar:vertical { display: none; width: 0; }
-    .overflow-x-auto::-webkit-scrollbar-track, .overflow-x-auto::-webkit-scrollbar-thumb { background: #ffffff; }
+    .overflow-x-auto { scrollbar-width: none; -ms-overflow-style: none; }
+    .overflow-x-auto::-webkit-scrollbar { display: none; height: 0; width: 0; }
   `;
   win.webContents.on("did-finish-load", () => {
     win.webContents.insertCSS(hideVisibleScrollbars).catch(() => {});

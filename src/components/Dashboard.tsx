@@ -34,7 +34,9 @@ export function Dashboard({ leads, buildId = "dev" }: DashboardProps) {
 
   useEffect(() => {
     const n = Number(localStorage.getItem("brightness") || 100);
-    if (Number.isFinite(n)) setBrightness(n);
+    const value = Number.isFinite(n) ? n : 100;
+    setBrightness(value);
+    document.documentElement.style.filter = `brightness(${value}%)`;
   }, []);
 
   function onBrightness(n: number) {

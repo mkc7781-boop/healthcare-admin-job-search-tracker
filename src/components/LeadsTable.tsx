@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { LeadForm } from "@/components/LeadForm";
+import { MinRequirementsCell } from "@/components/MinRequirementsCell";
 import { NotesCell } from "@/components/NotesCell";
 import { PriorityBadge } from "@/components/PriorityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -28,21 +29,21 @@ function formatDate(value: string | null) {
   return `${month}/${day}/${year}`;
 }
 
-const ACTION_COL = { header: "Actions", minWidth: "min-w-[168px]" };
+const ACTION_COL = { header: "Actions", width: "w-[148px]" };
 
-const COLUMNS: { header: string; minWidth: string }[] = [
-  { header: "Employer", minWidth: "min-w-[180px]" },
-  { header: "Career Site", minWidth: "min-w-[100px]" },
-  { header: "Position", minWidth: "min-w-[160px]" },
-  { header: "City", minWidth: "min-w-[120px]" },
-  { header: "Min Requirements", minWidth: "w-[260px] max-w-[260px]" },
-  { header: "Priority", minWidth: "min-w-[100px]" },
-  { header: "Status", minWidth: "min-w-[130px]" },
-  { header: "Date Applied", minWidth: "min-w-[110px]" },
-  { header: "Follow-up", minWidth: "min-w-[100px]" },
-  { header: "Due Date", minWidth: "min-w-[100px]" },
-  { header: "Contact", minWidth: "w-[160px] max-w-[160px]" },
-  { header: "Notes", minWidth: "min-w-[140px]" },
+const COLUMNS: { header: string; width: string }[] = [
+  { header: "Employer", width: "w-[128px]" },
+  { header: "Career Site", width: "w-[76px]" },
+  { header: "Position", width: "w-[128px]" },
+  { header: "City", width: "w-[96px]" },
+  { header: "Min Requirements", width: "w-[168px]" },
+  { header: "Priority", width: "w-[80px]" },
+  { header: "Status", width: "w-[108px]" },
+  { header: "Date Applied", width: "w-[92px]" },
+  { header: "Follow-up", width: "w-[92px]" },
+  { header: "Due Date", width: "w-[92px]" },
+  { header: "Contact", width: "w-[120px]" },
+  { header: "Notes", width: "w-[168px]" },
 ];
 
 const stickyActionClass =
@@ -84,18 +85,18 @@ export function LeadsTable({ leads }: LeadsTableProps) {
         <p className="mb-3 text-sm text-[var(--color-destructive)]">{deleteError}</p>
       )}
       <div className="w-full overflow-x-auto rounded-md border border-[var(--color-border)]">
-        <table className="w-max min-w-full table-auto text-left text-sm">
+        <table className="w-full min-w-[1496px] table-fixed text-left text-sm">
           <thead className="bg-[var(--color-muted)]">
             <tr>
               <th
-                className={`px-4 py-3 font-medium whitespace-nowrap ${ACTION_COL.minWidth} ${stickyActionClass} bg-[var(--color-muted)]`}
+                className={`px-3 py-3 font-medium whitespace-nowrap ${ACTION_COL.width} ${stickyActionClass} bg-[var(--color-muted)]`}
               >
                 {ACTION_COL.header}
               </th>
               {COLUMNS.map((col) => (
                 <th
                   key={col.header}
-                  className={`px-4 py-3 font-medium whitespace-nowrap ${col.minWidth}`}
+                  className={`px-3 py-3 font-medium whitespace-nowrap ${col.width}`}
                 >
                   {col.header}
                 </th>
@@ -106,7 +107,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
             {leads.map((lead) => (
               <tr key={lead.id} className="border-t border-[var(--color-border)] align-top">
                 <td
-                  className={`px-4 py-3 ${ACTION_COL.minWidth} ${stickyActionClass} bg-[var(--color-card)]`}
+                  className={`px-3 py-3 ${ACTION_COL.width} ${stickyActionClass} bg-[var(--color-card)]`}
                 >
                   <div className="flex flex-wrap gap-1">
                     <Button
@@ -152,10 +153,10 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                     </AlertDialog>
                   </div>
                 </td>
-                <td className={`px-4 py-3 font-medium ${COLUMNS[0].minWidth}`}>
+                <td className={`truncate px-3 py-3 font-medium ${COLUMNS[0].width}`} title={lead.employer}>
                   {lead.employer}
                 </td>
-                <td className={`px-4 py-3 ${COLUMNS[1].minWidth}`}>
+                <td className={`px-3 py-3 ${COLUMNS[1].width}`}>
                   {lead.career_site ? (
                     <a
                       href={lead.career_site}
@@ -169,30 +170,37 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                     "—"
                   )}
                 </td>
-                <td className={`px-4 py-3 ${COLUMNS[2].minWidth}`}>{lead.position || "—"}</td>
-                <td className={`px-4 py-3 ${COLUMNS[3].minWidth}`}>{lead.city || "—"}</td>
-                <td className={`px-4 py-3 ${COLUMNS[4].minWidth}`}>
-                  <div className="line-clamp-3 break-words">{lead.min_requirements || "—"}</div>
+                <td className={`truncate px-3 py-3 ${COLUMNS[2].width}`} title={lead.position || undefined}>
+                  {lead.position || "—"}
                 </td>
-                <td className={`px-4 py-3 ${COLUMNS[5].minWidth}`}>
+                <td className={`truncate px-3 py-3 ${COLUMNS[3].width}`} title={lead.city || undefined}>
+                  {lead.city || "—"}
+                </td>
+                <td className={`px-3 py-3 ${COLUMNS[4].width}`}>
+                  <MinRequirementsCell lead={lead} />
+                </td>
+                <td className={`px-3 py-3 ${COLUMNS[5].width}`}>
                   <PriorityBadge priority={lead.priority} />
                 </td>
-                <td className={`px-4 py-3 ${COLUMNS[6].minWidth}`}>
+                <td className={`px-3 py-3 ${COLUMNS[6].width}`}>
                   <StatusBadge status={lead.status} />
                 </td>
-                <td className={`px-4 py-3 whitespace-nowrap ${COLUMNS[7].minWidth}`}>
+                <td className={`px-3 py-3 whitespace-nowrap ${COLUMNS[7].width}`}>
                   {formatDate(lead.date_applied)}
                 </td>
-                <td className={`px-4 py-3 whitespace-nowrap ${COLUMNS[8].minWidth}`}>
+                <td className={`px-3 py-3 whitespace-nowrap ${COLUMNS[8].width}`}>
                   {formatDate(lead.follow_up_date)}
                 </td>
-                <td className={`px-4 py-3 whitespace-nowrap ${COLUMNS[9].minWidth}`}>
+                <td className={`px-3 py-3 whitespace-nowrap ${COLUMNS[9].width}`}>
                   {formatDate(lead.due_date)}
                 </td>
-                <td className={`px-4 py-3 ${COLUMNS[10].minWidth}`}>
-                  <div className="line-clamp-3 break-words">{lead.contact_recruiter || "—"}</div>
+                <td
+                  className={`truncate px-3 py-3 ${COLUMNS[10].width}`}
+                  title={lead.contact_recruiter || undefined}
+                >
+                  {lead.contact_recruiter || "—"}
                 </td>
-                <td className={`px-4 py-3 ${COLUMNS[11].minWidth}`}>
+                <td className={`px-3 py-3 ${COLUMNS[11].width}`}>
                   <NotesCell lead={lead} />
                 </td>
               </tr>
